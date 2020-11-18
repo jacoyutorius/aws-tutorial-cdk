@@ -70,7 +70,7 @@ export class AwsTutorialStack extends cdk.Stack {
     });
     sgBastion.addIngressRule(
       Peer.anyIpv4(), // とりあえずどこからでもアクセス許可とする
-      Port.tcp(80)
+      Port.tcp(22)
     );
 
     // Webサーバー
@@ -85,8 +85,8 @@ export class AwsTutorialStack extends cdk.Stack {
       Port.tcp(22)
     );
     sgWeb.addIngressRule(
-      sgBastion,
-      Port.tcp(22)
+      Peer.anyIpv4(),
+      Port.tcp(80)
     );
 
     // Appサーバー
