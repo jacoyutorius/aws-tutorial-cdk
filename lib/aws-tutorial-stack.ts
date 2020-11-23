@@ -59,6 +59,16 @@ export class AwsTutorialStack extends cdk.Stack {
       routerId: internetGateway.ref
     });
 
+    // 今回のチュートリアルではNATではなくIGWを使う。NAT高いから?
+    privateSubnet_1.addRoute("PrivateSubnet1Route", {
+      routerType: RouterType.GATEWAY,
+      routerId: internetGateway.ref
+    });
+    privateSubnet_2.addRoute("PrivateSubnet2Route", {
+      routerType: RouterType.GATEWAY,
+      routerId: internetGateway.ref
+    });
+
     const cidrIp = this.node.tryGetContext('cidr_ip');
 
     // 踏み台サーバー
@@ -101,7 +111,7 @@ export class AwsTutorialStack extends cdk.Stack {
       Port.tcp(22)
     );
     sgApp.addIngressRule(
-      sgBastion,
+      sgWeb,
       Port.tcp(3000)
     );
 
@@ -117,7 +127,7 @@ export class AwsTutorialStack extends cdk.Stack {
       Port.tcp(22)
     );
     sgDb.addIngressRule(
-      sgBastion,
+      sgApp,
       Port.tcp(27017)
     );
   }
